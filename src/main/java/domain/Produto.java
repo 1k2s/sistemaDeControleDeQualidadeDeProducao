@@ -2,32 +2,31 @@ package domain;
 
 public abstract class Produto {
 
-    private Long codigo;
+    private int codigo;
     private String nome;
     private String lote;
     private boolean aprovadoTeste;
 
 
     /*Constructor*/
-    public Produto(Long codigo, String nome, String lote, boolean aprovadoTeste) {
+    public Produto(int codigo, String nome, String lote) {
         this.codigo = codigo;
         this.nome = nome;
         this.lote = lote;
-        this.aprovadoTeste = aprovadoTeste;
     }
 
     public Produto() {}
 
 
     /*Métodos abstratos*/
-    public abstract String getDetalhes(Long codigoProduto);
-    public abstract String inspecionar(Long codigoProduto);
+    public abstract String getDetalhes();
+    public abstract String inspecionar();
 
 
     /*Getters and Setters*/
-    public Long getCodigo() {return codigo;}
+    public int getCodigo() {return codigo;}
 
-    public void setCodigo(Long codigo) {this.codigo = codigo;}
+    public void setCodigo(int codigo) {this.codigo = codigo;}
 
     public String getNome() {return nome;}
 

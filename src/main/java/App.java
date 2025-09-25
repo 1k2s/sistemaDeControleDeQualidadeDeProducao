@@ -24,11 +24,10 @@ public class App {
                     System.out.println("Opção Inválida!");
                 }
             }
-
-            scan.close();
-            System.out.println("Sistema Encerrado!");
-
         }
+
+        scan.close();
+        System.out.println("Sistema Encerrado!");
     }
 
 

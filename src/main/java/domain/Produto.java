@@ -38,4 +38,7 @@ public abstract class Produto {
 
     public boolean isAprovado() {return aprovadoTeste;}
 
+    public void setAprovadoTeste(boolean aprovadoTeste) {
+        this.aprovadoTeste = aprovadoTeste;
+    }
 }

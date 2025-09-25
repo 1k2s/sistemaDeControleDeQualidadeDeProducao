@@ -28,33 +28,46 @@ public class ProdutoEletronico extends Produto {
 
     @Override
     public String inspecionar() {
-
+        String retornoInspeção = "";
         int tensaoNominal = this.tensaoNominal;
         double tensaoReal = this.tensaoReal;
 
         double margemAceitavel110= 0.05;
         double margemAceitavel220= 0.10;
 
-        String resultadoTeste = switch (tensaoNominal) {
+
+        /*Resultado tensão*/
+        String resultadoTesteTensao = switch (tensaoNominal) {
             case 110 -> testeTensao(tensaoNominal, tensaoReal, margemAceitavel110);
             case 220 -> testeTensao(tensaoNominal, tensaoReal, margemAceitavel220);
             default -> "Falha na leitura da tensão nominal";
         };
 
-        return resultadoTeste;
+
+        /*Resultado inspecionar*/
+        if (resultadoTesteTensao.equals("Aprovado") && this.ligando) {retornoInspeção = "Resultado Inspeção: Aprovado"; this.setAprovadoTeste(true);}
+        else if (resultadoTesteTensao.equals("Aprovado") && !this.ligando) {retornoInspeção = "Resultado Inspeção: Reprovado. Teste de funcionalidade falhou!";}
+        else if (!resultadoTesteTensao.equals("Aprovado") && !this.ligando) {retornoInspeção = "Resultado Inspeção: Reprovado. Todos os testes foram reprovados";}
+        else if (!resultadoTesteTensao.equals("Aprovado") && this.ligando){retornoInspeção = "Resultado Inspeção: " + resultadoTesteTensao;}
+
+        return retornoInspeção;
     };
 
 
-    /*Método interno*/
+    /*Metodo interno*/
     private String testeTensao(int tensaoNominal, double tensaoReal, double margemAceitavel) {
 
-        String teste = "Reprovado";
+        String teste = "";
 
         double limiteSuperior = tensaoNominal * (1 + margemAceitavel);
         double limiteInferior = tensaoNominal * (1 - margemAceitavel);
 
         if (tensaoReal >= limiteInferior && tensaoReal <= limiteSuperior) {
-            return "Aprovado";
+            teste =  "Aprovado";
+        } else if (tensaoReal < limiteInferior){
+            teste = "Reprovado. Tensão aferida está abaixo do limite minimo";
+        } else {
+            teste = "Reprovado. Tensão aferida está acima do limite máximo";
         }
 
         return teste;

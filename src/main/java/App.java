@@ -11,6 +11,7 @@ public class App {
         boolean sair = false;
 
         while(!sair) {
+
             int opcao = lerOpcaoMenu();
 
             switch(opcao) {

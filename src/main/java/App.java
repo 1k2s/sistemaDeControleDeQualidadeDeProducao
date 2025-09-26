@@ -58,8 +58,8 @@ public class App {
             } catch (NumberFormatException e) {
                 System.out.println();
                 System.out.println("Por favor, digite apenas números.\n");
-            }
-        }
+            };
+        };
 
         return opcao;
     }
@@ -76,7 +76,7 @@ public class App {
                 2. Produto Alimentício
                 
                 Resposta:""");
-        }
+        };
 
         try {
             String entrada = scan.nextLine().trim();
@@ -85,7 +85,7 @@ public class App {
         } catch (NumberFormatException e) {
             System.out.println();
             System.out.println("Por favor, digite apenas números.\n");
-        }
+        };
 
         return opcao;
     }

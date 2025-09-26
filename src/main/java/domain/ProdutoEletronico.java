@@ -11,9 +11,9 @@ public class ProdutoEletronico extends Produto {
         this.tensaoNominal = tensaoNominal;
         this.tensaoReal = tensaoReal;
         this.ligando = ligando;
-    }
+    };
 
-    public ProdutoEletronico() {}
+    public ProdutoEletronico() {};
 
 
 
@@ -29,8 +29,6 @@ public class ProdutoEletronico extends Produto {
     @Override
     public String inspecionar() {
         String retornoInspeção = "";
-        int tensaoNominal = this.tensaoNominal;
-        double tensaoReal = this.tensaoReal;
 
         double margemAceitavel110= 0.05;
         double margemAceitavel220= 0.10;
@@ -38,8 +36,8 @@ public class ProdutoEletronico extends Produto {
 
         /*Resultado tensão*/
         String resultadoTesteTensao = switch (tensaoNominal) {
-            case 110 -> testeTensao(tensaoNominal, tensaoReal, margemAceitavel110);
-            case 220 -> testeTensao(tensaoNominal, tensaoReal, margemAceitavel220);
+            case 110 -> testeTensao(this.tensaoNominal, this.tensaoReal, margemAceitavel110);
+            case 220 -> testeTensao(this.tensaoNominal, this.tensaoReal, margemAceitavel220);
             default -> "Falha na leitura da tensão nominal";
         };
 
@@ -48,7 +46,7 @@ public class ProdutoEletronico extends Produto {
         if (resultadoTesteTensao.equals("Aprovado") && this.ligando) {retornoInspeção = "Resultado Inspeção: Aprovado"; this.setAprovadoTeste(true);}
         else if (resultadoTesteTensao.equals("Aprovado") && !this.ligando) {retornoInspeção = "Resultado Inspeção: Reprovado. Teste de funcionalidade falhou!";}
         else if (!resultadoTesteTensao.equals("Aprovado") && !this.ligando) {retornoInspeção = "Resultado Inspeção: Reprovado. Todos os testes foram reprovados";}
-        else if (!resultadoTesteTensao.equals("Aprovado") && this.ligando){retornoInspeção = "Resultado Inspeção: " + resultadoTesteTensao;}
+        else if (!resultadoTesteTensao.equals("Aprovado") && this.ligando) {retornoInspeção = "Resultado Inspeção: " + resultadoTesteTensao;}
 
         return retornoInspeção;
     };

@@ -7,10 +7,15 @@ public class ProdutoAlimenticio extends Produto {
     private LocalDate dataValidade;
     private boolean embalagemIntegra;
 
+    
+
+    public ProdutoAlimenticio(int codigo, String nome, String lote, String dataValidade2, boolean embalagemIntegra2) {
+    }
+
     public ProdutoAlimenticio(int codigo, String nome, String lote,
-                              LocalDate dataValidade, boolean embalagemIntegra) {
+                              LocalDate dataValidade2, boolean embalagemIntegra) {
         super(codigo, nome, lote);
-        this.dataValidade = dataValidade;
+        this.dataValidade = dataValidade2;
         this.embalagemIntegra = embalagemIntegra;
     }
 

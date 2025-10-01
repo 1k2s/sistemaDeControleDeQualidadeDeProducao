@@ -7,8 +7,8 @@ public class Smartphone extends ProdutoEletronico {
     private boolean conectividade5G;
 
     /*Constructors*/
-    public Smartphone(int codigo, String nome, String lote, int tensaoNominal, Double tensaoReal, boolean ligando, int capacidadeBateriaNominal, int capacidadeBateriaReal, boolean conectividade5G) {
-        super(codigo, nome, lote, tensaoNominal, tensaoReal, ligando);
+    public Smartphone(int codigo, String nome, String lote,int tensaoNominal, int capacidadeBateriaNominal, int capacidadeBateriaReal, boolean conectividade5G) {
+        super(codigo, nome, lote, tensaoNominal);
         this.capacidadeBateriaNominal = capacidadeBateriaNominal;
         this.capacidadeBateriaReal = capacidadeBateriaReal;
         this.conectividade5G = conectividade5G;

@@ -8,6 +8,10 @@ public class App {
 
     public static void main(String[] args) {
 
+        double valorAleatorio = 104.0 + (Math.random() * (116.0 - 104.0));
+
+        System.out.println(valorAleatorio);
+
         boolean sair = false;
 
         while(!sair) {
@@ -64,16 +68,36 @@ public class App {
         return opcao;
     }
 
-    private static int lerTipoProduto() {
+    private static int cadastrarProduto(){
+
+        boolean sair = false;
+
+        while(!sair) {
+
+            int opcao = -1;
+            int tipoProduto = lerProduto();
+
+            switch(tipoProduto) {
+                case 1 -> {
+                    String nome = lerNomeProduto();
+                }
+
+            }
+        }
+
+        return 0;
+    };
+
+    private static int lerProduto() {
         int opcao = -1;
         boolean entradaValida = false;
 
         while(!entradaValida) {
             System.out.println("""
-                Selecione o tipo do produto:
+                Selecione o produto:
                 
-                1. Produto Eletrônico
-                2. Produto Alimentício
+                1. SmartPhone
+                2. Alimento Perecível
                 
                 Resposta:""");
         };
@@ -89,7 +113,6 @@ public class App {
 
         return opcao;
     }
-
 
     private static String lerNomeProduto() {
 

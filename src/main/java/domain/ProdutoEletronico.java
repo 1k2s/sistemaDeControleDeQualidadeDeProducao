@@ -1,16 +1,26 @@
 package domain;
 
+import java.util.Random;
+
 public class ProdutoEletronico extends Produto {
 
     private int tensaoNominal; //especificado pelo fabricante
     private double tensaoReal; // tensão em que o dispositivo esta operando
     private boolean ligando;
 
-    public ProdutoEletronico(int codigo, String nome, String lote, int tensaoNominal, Double tensaoReal, boolean ligando) {
+    Random random = new Random();
+
+    public ProdutoEletronico(int codigo, String nome, String lote, int tensaoNominal) {
         super(codigo, nome, lote);
         this.tensaoNominal = tensaoNominal;
-        this.tensaoReal = tensaoReal;
-        this.ligando = ligando;
+
+
+        //Setando atributos random
+        this.tensaoReal = this.tensaoNominal == 110.0
+            ? (Math.round(103.0 + (Math.random() * (120.0 - 103.0)))) // 110
+            : (Math.round(210.0 + (Math.random() * (210.0 - 230.0))));// 220
+
+        this.ligando = random.nextBoolean();
     };
 
     public ProdutoEletronico() {};

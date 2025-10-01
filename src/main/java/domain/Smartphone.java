@@ -21,7 +21,7 @@ public class Smartphone extends ProdutoEletronico {
     }
 
     public Smartphone() {};
-s
+
     @Override
     public String inspecionar() {
 
@@ -33,11 +33,9 @@ s
 
 
         if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Inspeção Aprovada!";}
-
         else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {
             resultadoInspecao = "Inspeção Reprovada. " + resultadoTesteTensaoEFuncionalidade;
         }
-
         else if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. " + resultadoTesteCapacidadeBateria;}
         else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. Todos os testes foram reprovados";}
         else if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. Teste de conectividade falhou!";}
@@ -68,6 +66,14 @@ s
 
         return teste;
     }
+
+
+    public String testeConectividade5g(){
+        return this.conectividade5G ? "Aprovado" : "Teste de conectividade falhou";
+    };
+
+
+
 
 
 

@@ -38,34 +38,25 @@ public class ProdutoEletronico extends Produto {
 
     @Override
     public String inspecionar() {
-        String retornoInspeção = "";
 
-        double margemAceitavel110= 0.05;
-        double margemAceitavel220= 0.10;
-
-
-        /*Resultado tensão*/
-        String resultadoTesteTensao = switch (tensaoNominal) {
-            case 110 -> testeTensao(this.tensaoNominal, this.tensaoReal, margemAceitavel110);
-            case 220 -> testeTensao(this.tensaoNominal, this.tensaoReal, margemAceitavel220);
-            default -> "Falha na leitura da tensão nominal";
-        };
-
+        String retornoInspecao = "";
 
         /*Resultado inspecionar*/
-        if (resultadoTesteTensao.equals("Aprovado") && this.ligando) {retornoInspeção = "Resultado Inspeção: Aprovado"; this.setAprovadoTeste(true);}
-        else if (resultadoTesteTensao.equals("Aprovado") && !this.ligando) {retornoInspeção = "Resultado Inspeção: Reprovado. Teste de funcionalidade falhou!";}
-        else if (!resultadoTesteTensao.equals("Aprovado") && !this.ligando) {retornoInspeção = "Resultado Inspeção: Reprovado. Todos os testes foram reprovados";}
-        else if (!resultadoTesteTensao.equals("Aprovado") && this.ligando) {retornoInspeção = "Resultado Inspeção: " + resultadoTesteTensao;}
+        if ( testeTensao().equals("Aprovado") && testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = testeTensao(); this.setAprovadoTeste(true);}
+        else if ( !testeTensao().equals("Aprovado") && !testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = "Reprovado. Todos os testes foram reprovados";}
+        else if ( testeTensao().equals("Aprovado") && !testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = "Reprovado. " + testeFuncionalidade();}
+        else if ( !testeTensao().equals("Aprovado") && testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = "Reprovado. " + testeTensao();}
 
-        return retornoInspeção;
+        return retornoInspecao;
     };
 
 
     /*Metodo interno*/
-    private String testeTensao(int tensaoNominal, double tensaoReal, double margemAceitavel) {
+    private String testeTensao() {
 
         String teste = "";
+
+        double margemAceitavel = this.tensaoNominal == 110 ? 0.05 : 0.10;
 
         double limiteSuperior = tensaoNominal * (1 + margemAceitavel);
         double limiteInferior = tensaoNominal * (1 - margemAceitavel);
@@ -73,14 +64,17 @@ public class ProdutoEletronico extends Produto {
         if (tensaoReal >= limiteInferior && tensaoReal <= limiteSuperior) {
             teste =  "Aprovado";
         } else if (tensaoReal < limiteInferior){
-            teste = "Reprovado. Tensão aferida está abaixo do limite minimo";
+            teste = "Tensão aferida está abaixo do limite minimo";
         } else {
-            teste = "Reprovado. Tensão aferida está acima do limite máximo";
+            teste = "Tensão aferida está acima do limite máximo";
         }
 
         return teste;
     };
 
+    private String testeFuncionalidade() {
+        return this.ligando ? "Aprovado" : "Teste de funcionalidade falhou!";
+    };
 
 
     /*Getters and Setters*/

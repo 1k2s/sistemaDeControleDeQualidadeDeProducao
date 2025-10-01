@@ -1,36 +1,43 @@
 package domain;
 
+import java.util.Random;
+
 public class Smartphone extends ProdutoEletronico {
 
     private int capacidadeBateriaNominal;
-    private int capacidadeBateriaReal;
+    private double capacidadeBateriaReal;
     private boolean conectividade5G;
 
+    Random random = new Random();
+
     /*Constructors*/
-    public Smartphone(int codigo, String nome, String lote,int tensaoNominal, int capacidadeBateriaNominal, int capacidadeBateriaReal, boolean conectividade5G) {
+    public Smartphone(int codigo, String nome, String lote,int tensaoNominal, int capacidadeBateriaNominal) {
         super(codigo, nome, lote, tensaoNominal);
         this.capacidadeBateriaNominal = capacidadeBateriaNominal;
-        this.capacidadeBateriaReal = capacidadeBateriaReal;
-        this.conectividade5G = conectividade5G;
+
+        //Setando atributos random
+        this.capacidadeBateriaReal = (capacidadeBateriaNominal - 1000) + (Math.random() * (capacidadeBateriaNominal + 1000) - (capacidadeBateriaNominal - 1000));
+        this.conectividade5G = random.nextBoolean();
     }
 
     public Smartphone() {};
-
+s
     @Override
     public String inspecionar() {
 
         String resultadoInspecao = "";
-        double margemAceitavel = 0.10;
 
         /*Teste de tensão e funcionalidade herdado da classe pai*/
         String resultadoTesteTensaoEFuncionalidade = super.inspecionar();
 
-        /*Teste da bateria e conectividade5g*/
-        String resultadoTesteCapacidadeBateria = testeCapacidadeBateria(this.capacidadeBateriaNominal, this.capacidadeBateriaReal, margemAceitavel);
 
 
         if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Inspeção Aprovada!";}
-        else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. " + resultadoTesteTensaoEFuncionalidade;}
+
+        else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {
+            resultadoInspecao = "Inspeção Reprovada. " + resultadoTesteTensaoEFuncionalidade;
+        }
+
         else if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. " + resultadoTesteCapacidadeBateria;}
         else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. Todos os testes foram reprovados";}
         else if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. Teste de conectividade falhou!";}
@@ -43,15 +50,17 @@ public class Smartphone extends ProdutoEletronico {
 
 
     /*Método interno*/
-    public String testeCapacidadeBateria(int capacidadeBateriaNominal, int capacidadeBateriaReal, double margemAceitavel) {
+    public String testeCapacidadeBateria() {
         String teste = "";
 
-        double limiteSuperior = capacidadeBateriaNominal * (1 + margemAceitavel);
-        double limiteInferior = capacidadeBateriaNominal * (1 - margemAceitavel);
+        double margemAceitavel = 0.10;
 
-        if (capacidadeBateriaReal >= limiteInferior && capacidadeBateriaReal <= limiteSuperior) {
+        double limiteSuperior = this.capacidadeBateriaNominal * (1 + margemAceitavel);
+        double limiteInferior = this.capacidadeBateriaNominal * (1 - margemAceitavel);
+
+        if (this.capacidadeBateriaReal >= limiteInferior && this.capacidadeBateriaReal <= limiteSuperior) {
             teste =  "Aprovado";
-        } else if (capacidadeBateriaReal < limiteInferior){
+        } else if (this.capacidadeBateriaReal < limiteInferior){
             teste = "Capacidade aferida está abaixo do limite mínimo";
         } else {
             teste = "Capacidade aferida está acima do limite máximo";

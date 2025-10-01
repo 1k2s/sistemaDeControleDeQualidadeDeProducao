@@ -3,9 +3,13 @@ package domain;
 public class TesteProduto {
     public static void main(String[] args) {
 
-        Smartphone iphone = new Smartphone(1,"iphoneX", "123", 110, 3500, 3500, true);
+        Smartphone iphone = new Smartphone(1,"iphoneX", "123", 110, 3500);
 
-        System.out.println(iphone.getTensaoReal() + " - " + iphone.isLigando());
-        System.out.println(iphone.inspecionar());
+
+        ProdutoEletronico produtoEletronico = new ProdutoEletronico(123, "teste", "123456", 110);
+
+
+        System.out.println(produtoEletronico.getTensaoReal() + " - " + produtoEletronico.isLigando());
+        System.out.println(produtoEletronico.inspecionar());
     }
 }

@@ -153,12 +153,94 @@ public class App {
         }
     };
 
-    private static void editarProduto(){
+    // private static void editarProduto(){
+    // }
 
-
-
-
+    private static void editarProduto() {
+        if (listaProdutos.isEmpty()) {
+            System.out.println("Não há produtos cadastrados para editar.");
+            return;
+        }
+    
+        System.out.println("\n=== LISTA DE PRODUTOS ===");
+        for (int i = 0; i < listaProdutos.size(); i++) {
+            Produto produto = listaProdutos.get(i);
+            System.out.printf("%d. %d - %s\n", i + 1, produto.getCodigo(), produto.getNome());
+        }
+    
+        System.out.print("Selecione o número do produto que deseja editar (0 para sair): ");
+        String entrada = scan.nextLine().trim();
+    
+        try {
+            int escolha = Integer.parseInt(entrada);
+    
+            if (escolha == 0) {
+                return;
+            }
+    
+            if (escolha < 1 || escolha > listaProdutos.size()) {
+                System.out.println("Opção inválida!");
+                return;
+            }
+    
+            Produto produtoSelecionado = listaProdutos.get(escolha - 1);
+    
+            if (produtoSelecionado instanceof Smartphone smartphone) {
+                editarSmartphone(smartphone);
+            } else {
+                System.out.println("Esse tipo de produto ainda não possui edição implementada.");
+            }
+    
+        } catch (NumberFormatException e) {
+            System.out.println("Por favor, digite apenas números.");
+        }
     }
+    
+    private static void editarSmartphone(Smartphone smartphone) {
+        boolean sair = false;
+    
+        while (!sair) {
+            System.out.printf(""" 
+                
+                === EDITAR SMARTPHONE ===
+                Produto atual: %s
+                
+                1. Código (atual: %d)
+                2. Nome (atual: %s)
+                3. Lote (atual: %s)
+                4. Tensão Nominal (atual: %d)
+                5. Capacidade Bateria (atual: %d)
+                0. Voltar
+                
+                Resposta: """,
+                smartphone.getNome(),
+                smartphone.getCodigo(),
+                smartphone.getNome(),
+                smartphone.getLote(),
+                smartphone.getTensaoNominal(),
+                smartphone.getCapacidadeBateriaNominal()
+            );
+    
+            String entrada = scan.nextLine().trim();
+    
+            try {
+                int opcao = Integer.parseInt(entrada);
+    
+                switch (opcao) {
+                    case 1 -> smartphone.setCodigo(lerCodigoProduto());
+                    case 2 -> smartphone.setNome(lerNomeProduto());
+                    case 3 -> smartphone.setLote(lerLoteProduto());
+                    case 4 -> smartphone.setTensaoNominal(lerTensaoNominal());
+                    case 5 -> smartphone.setCapacidadeBateriaNominal(lerCapacidadeBateriaNominal());
+                    case 0 -> sair = true;
+                    default -> System.out.println("Opção inválida!");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor, digite apenas números.");
+            }
+        }
+    }
+    
 
 
 

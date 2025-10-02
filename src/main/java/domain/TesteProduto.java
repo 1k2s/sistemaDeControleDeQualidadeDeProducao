@@ -5,11 +5,10 @@ public class TesteProduto {
 
         Smartphone iphone = new Smartphone(1,"iphoneX", "123", 110, 3500);
 
-
-        ProdutoEletronico produtoEletronico = new ProdutoEletronico(123, "teste", "123456", 110);
-
-
-        System.out.println(produtoEletronico.getTensaoReal() + " - " + produtoEletronico.isLigando());
-        System.out.println(produtoEletronico.inspecionar());
+        System.out.println(iphone.getDetalhes());
+        System.out.println();
+        System.out.println(iphone.getDetalhesInspecao());
+        System.out.println();
+        System.out.println(iphone.inspecionar());
     }
 }

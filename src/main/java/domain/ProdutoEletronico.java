@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class ProdutoEletronico extends Produto {
@@ -15,6 +16,8 @@ public class ProdutoEletronico extends Produto {
         this.tensaoNominal = tensaoNominal;
 
 
+        /*this.tensaoReal = tensaoNominal;*/
+
         //Setando atributos random
         this.tensaoReal = this.tensaoNominal == 110.0
             ? (Math.round(103.0 + (Math.random() * (120.0 - 103.0)))) // 110
@@ -29,23 +32,37 @@ public class ProdutoEletronico extends Produto {
 
     /*Sobrescrevendo métodos abstratos da classe super*/
     @Override
-    public String getDetalhes() {
-      return
-        "-- Detalhes do produto --\n" +
-        "Codigo: " + this.getCodigo() + "\n"+
-        "Nome: " + this.getNome() + "\n";
-    };
-
-    @Override
     public String inspecionar() {
 
         String retornoInspecao = "";
 
+        String resultadoTensao = testeTensao();
+        String resultadoFuncionalidade = testeFuncionalidade();
+
+        if (resultadoTensao.equals("Aprovado") &&
+            resultadoFuncionalidade.equals("Aprovado")) {
+            retornoInspecao = "Aprovado";
+            this.setAprovadoInspecao(true);
+        } else {
+
+            ArrayList<String> erros = new ArrayList<>();
+
+            if (!resultadoTensao.equals("Aprovado")) { erros.add(resultadoTensao); }
+            if (!resultadoFuncionalidade.equals("Aprovado")) { erros.add(resultadoFuncionalidade); }
+
+            if (erros.size() == 1) {
+                retornoInspecao = erros.get(0);
+            } else {
+                retornoInspecao = String.join("\n", erros);
+            }
+
+        }
+
         /*Resultado inspecionar*/
-        if ( testeTensao().equals("Aprovado") && testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = testeTensao(); this.setAprovadoTeste(true);}
-        else if ( !testeTensao().equals("Aprovado") && !testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = "Reprovado. Todos os testes foram reprovados";}
-        else if ( testeTensao().equals("Aprovado") && !testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = "Reprovado. " + testeFuncionalidade();}
-        else if ( !testeTensao().equals("Aprovado") && testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = "Reprovado. " + testeTensao();}
+        if ( testeTensao().equals("Aprovado") && testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = testeTensao(); this.setAprovadoInspecao(true);}
+        else if ( !testeTensao().equals("Aprovado") && !testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = testeTensao() + "\n" + testeFuncionalidade();}
+        else if ( testeTensao().equals("Aprovado") && !testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = testeFuncionalidade();}
+        else if ( !testeTensao().equals("Aprovado") && testeFuncionalidade().equals("Aprovado") ) {retornoInspecao = testeTensao();}
 
         return retornoInspecao;
     };
@@ -74,6 +91,14 @@ public class ProdutoEletronico extends Produto {
 
     private String testeFuncionalidade() {
         return this.ligando ? "Aprovado" : "Teste de funcionalidade falhou!";
+    };
+
+    public String getDetalhes() {
+        return "Detalhes do Produto" + "\n" +
+                "Codigo: " + getCodigo() + "\n" +
+                "Nome: " + getNome() + "\n" +
+                "Lote: " + getLote() + "\n" +
+                "Aprovado Inspeção: " + isAprovado();
     };
 
 

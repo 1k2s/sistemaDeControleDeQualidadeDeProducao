@@ -5,7 +5,7 @@ public abstract class Produto {
     private int codigo;
     private String nome;
     private String lote;
-    private boolean aprovadoTeste;
+    private boolean aprovadoInspecao;
 
 
     /*Constructor*/
@@ -36,9 +36,9 @@ public abstract class Produto {
 
     public void setLote(String lote) {this.lote = lote;}
 
-    public boolean isAprovado() {return aprovadoTeste;}
+    public boolean isAprovado() {return aprovadoInspecao;}
 
-    public void setAprovadoTeste(boolean aprovadoTeste) {
-        this.aprovadoTeste = aprovadoTeste;
+    public void setAprovadoInspecao(boolean aprovadoInspecao) {
+        this.aprovadoInspecao = aprovadoInspecao;
     }
 }

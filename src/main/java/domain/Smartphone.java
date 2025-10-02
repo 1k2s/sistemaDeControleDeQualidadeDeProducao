@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Smartphone extends ProdutoEletronico {
@@ -15,8 +16,10 @@ public class Smartphone extends ProdutoEletronico {
         super(codigo, nome, lote, tensaoNominal);
         this.capacidadeBateriaNominal = capacidadeBateriaNominal;
 
+        /*this.capacidadeBateriaReal = this.capacidadeBateriaNominal;*/
+
         //Setando atributos random
-        this.capacidadeBateriaReal = (capacidadeBateriaNominal - 1000) + (Math.random() * (capacidadeBateriaNominal + 1000) - (capacidadeBateriaNominal - 1000));
+        this.capacidadeBateriaReal = Math.round((capacidadeBateriaNominal - 1000) + (Math.random() * ((capacidadeBateriaNominal + 1000) - (capacidadeBateriaNominal - 1000))));
         this.conectividade5G = random.nextBoolean();
     }
 
@@ -27,27 +30,66 @@ public class Smartphone extends ProdutoEletronico {
 
         String resultadoInspecao = "";
 
-        /*Teste de tensão e funcionalidade herdado da classe pai*/
-        String resultadoTesteTensaoEFuncionalidade = super.inspecionar();
+        /*Armazenando os retornos para não precisar ficar chamando os métodos*/
+        String resultadoTensaoEFuncionalidade = super.inspecionar();
+        String resultadoBateria = testeCapacidadeBateria();
+        String resultadoConectividade = testeConectividade5g();
 
 
+        //Verificando se todos os retornos são aprovados(condição especial)
+        if (resultadoTensaoEFuncionalidade.equals("Aprovado") &&
+            resultadoBateria.equals("Aprovado") &&
+            resultadoConectividade.equals("Aprovado")) {
 
-        if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Inspeção Aprovada!";}
-        else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {
-            resultadoInspecao = "Inspeção Reprovada. " + resultadoTesteTensaoEFuncionalidade;
+            resultadoInspecao = "Inspeção Aprovada!";
+            setAprovadoInspecao(true);
+
+        } else {
+            // Lista que vai acumular as mensagens de erro
+            ArrayList<String> erros = new ArrayList<>();
+
+            // Verificando cada resultado e adicionando a lista de erros
+            if (!resultadoTensaoEFuncionalidade.equals("Aprovado")) { erros.add(resultadoTensaoEFuncionalidade); }
+            if (!resultadoBateria.equals("Aprovado")) {erros.add(resultadoBateria);}
+            if (!resultadoConectividade.equals("Aprovado")) {erros.add(resultadoConectividade);}
+
+            // Construindo as mensagems
+            if (erros.size() == 3) {
+                resultadoInspecao = "Inspeção Reprovada:\nTodos os testes falharam!";
+            } else if (erros.size() == 1) {
+                resultadoInspecao = "Inspeção Reprovada:\n" + erros.get(0);
+            } else {
+                resultadoInspecao = "Inspeção Reprovada:\n" + String.join("\n", erros);
+            }
         }
-        else if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. " + resultadoTesteCapacidadeBateria;}
-        else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. Todos os testes foram reprovados";}
-        else if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Inspeção Reprovada. Teste de conectividade falhou!";}
-        else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Resultado Inspeção: Reprovado. Teste de conectividade falhou." + resultadoTesteTensaoEFuncionalidade;}
-        else if(resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && !this.conectividade5G) {resultadoInspecao = "Resultado Inspeção: Reprovado. Teste de conectividade falhou." + resultadoTesteCapacidadeBateria;}
-        else if(!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !resultadoTesteCapacidadeBateria.equals("Aprovado") && this.conectividade5G) {resultadoInspecao = "Resultado Inspeção: Reprovado. " + resultadoTesteCapacidadeBateria + ". " + resultadoTesteTensaoEFuncionalidade;}
+
+
+        /*Estrutura com if*/
+        /*if ( resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && testeCapacidadeBateria().equals("Aprovado") && testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = resultadoTesteTensaoEFuncionalidade;
+            setAprovadoInspecao(true);
+        } else if (!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !testeCapacidadeBateria().equals("Aprovado") && !testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = "Reprovado. Todos os testes falharam";
+        } else if (!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && testeCapacidadeBateria().equals("Aprovado") && testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = "Reprovado. " + resultadoTesteTensaoEFuncionalidade;
+        } else if (resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !testeCapacidadeBateria().equals("Aprovado") && testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = "Reprovado. " + testeCapacidadeBateria();
+        } else if (resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && testeCapacidadeBateria().equals("Aprovado") && !testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = "Reprovado. " + testeConectividade5g();
+        } else if (resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !testeCapacidadeBateria().equals("Aprovado") && !testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = "Reprovado:\n" + testeCapacidadeBateria() + "\n" + testeConectividade5g();
+        } else if (!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && !testeCapacidadeBateria().equals("Aprovado") && testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = "Reprovado:\n" + resultadoTesteTensaoEFuncionalidade + "\n" + testeCapacidadeBateria();
+        } else if (!resultadoTesteTensaoEFuncionalidade.equals("Aprovado") && testeCapacidadeBateria().equals("Aprovado") && !testeConectividade5g().equals("Aprovado")) {
+            resultadoInspecao = "Reprovado:\n" + resultadoTesteTensaoEFuncionalidade + "\n" + testeConectividade5g();
+        }*/
+
 
         return resultadoInspecao;
-    }
+    };
 
 
-    /*Método interno*/
+    /*Metodos internos*/
     public String testeCapacidadeBateria() {
         String teste = "";
 
@@ -66,14 +108,19 @@ public class Smartphone extends ProdutoEletronico {
 
         return teste;
     }
-
-
     public String testeConectividade5g(){
         return this.conectividade5G ? "Aprovado" : "Teste de conectividade falhou";
     };
 
-
-
+    public String getDetalhesInspecao() {
+      return "Valores Inspeção:" + "\n" +
+              "Tensão Nominal: " + getTensaoNominal() + "\n" +
+              "Tensão Real: " + getTensaoReal() + "\n" +
+              "Funcional: " + isLigando() + "\n" +
+              "Capacidade Bateria Nominal: " + getCapacidadeBateriaNominal() + "\n" +
+              "Capacidade Bateria Real: " + getCapacidadeBateriaReal() + "\n" +
+              "Conectividade 5G: " + isConectividade5G() + "\n";
+    };
 
 
 

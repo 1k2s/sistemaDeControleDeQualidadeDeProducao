@@ -46,16 +46,16 @@ public class ProdutoPerecivel extends ProdutoAlimenticio {
         String resultado;
         if (resultadoTesteTemp.equals("Aprovado") && armazenamento && resultadoBasico.equals("APROVADO")) {
             resultado = "Resultado Inspeção: Aprovado";
-            this.setAprovadoTeste(true);
+            this.setAprovadoInspecao(true);
         } else if (!armazenamento) {
             resultado = "Resultado Inspeção: Reprovado. Armazenamento incorreto.";
-            this.setAprovadoTeste(false);
+            this.setAprovadoInspecao(false);
         } else if (!resultadoTesteTemp.equals("Aprovado")) {
             resultado = "Resultado Inspeção: " + resultadoTesteTemp;
-            this.setAprovadoTeste(false);
+            this.setAprovadoInspecao(false);
         } else {
             resultado = "Resultado Inspeção: Reprovado. " + resultadoBasico;
-            this.setAprovadoTeste(false);
+            this.setAprovadoInspecao(false);
         }
 
         return resultado;
@@ -70,7 +70,7 @@ public class ProdutoPerecivel extends ProdutoAlimenticio {
     }
 
     @Override
-    public void setAprovadoTeste(boolean aprovado) {
-        super.setAprovadoTeste(aprovado);
+    public void setAprovadoInspecao(boolean aprovado) {
+        super.setAprovadoInspecao(aprovado);
     }
 }

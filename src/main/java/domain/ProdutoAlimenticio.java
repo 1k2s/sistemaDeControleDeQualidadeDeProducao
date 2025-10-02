@@ -26,7 +26,7 @@ public class ProdutoAlimenticio extends Produto {
     public String inspecionar() {
         boolean dentroValidade = LocalDate.now().isBefore(dataValidade);
         boolean aprovado = embalagemIntegra && dentroValidade;
-        setAprovadoTeste(aprovado);
+        setAprovadoInspecao(aprovado);
         return aprovado ? "APROVADO" : "REPROVADO";
     }
 

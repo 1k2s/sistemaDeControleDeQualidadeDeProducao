@@ -30,7 +30,7 @@ public class App {
                 case 1 -> cadastrarProduto();
                 case 2 -> visualizarProduto();
                 case 3 -> editarProduto();
-                case 4 -> System.out.println("Inspecionar Produtos");
+                case 4 -> inspecionarProdutos();
                 case 0 -> sair = true;
                 default -> {
                     System.out.println();
@@ -195,6 +195,45 @@ public class App {
             System.out.println("Por favor, digite apenas números.");
         }
     }
+
+    private static void inspecionarProdutos() {
+        if (listaProdutos.isEmpty()) {
+            System.out.println("\nNão há produtos cadastrados para inspecionar!");
+            return;
+        }
+    
+        System.out.println("\n=== INSPEÇÃO DE PRODUTOS ===");
+    
+        for (Produto produto : listaProdutos) {
+            System.out.println("\nProduto: " + produto.getDetalhes());
+    
+            if (produto instanceof Smartphone smartphone) {
+                boolean aprovado = true;
+    
+                // Critérios de inspeção
+                if (smartphone.getTensaoNominal() < 100 || smartphone.getTensaoNominal() > 240) {
+                    System.out.println("⚠️ Falha: Tensão fora do padrão (100V - 240V)");
+                    aprovado = false;
+                }
+    
+                if (smartphone.getCapacidadeBateriaNominal() < 1000 || smartphone.getCapacidadeBateriaNominal() > 6000) {
+                    System.out.println("⚠️ Falha: Capacidade da bateria fora do padrão (1000mAh - 6000mAh)");
+                    aprovado = false;
+                }
+    
+                if (aprovado) {
+                    System.out.println("✅ Produto APROVADO no teste de qualidade!");
+                } else {
+                    System.out.println("❌ Produto REPROVADO no teste de qualidade!");
+                }
+            } else {
+                System.out.println("⚠️ Tipo de produto ainda sem critérios de inspeção definidos.");
+            }
+        }
+    
+        System.out.println("\nFim da inspeção!\n");
+    }
+    
     
     private static void editarSmartphone(Smartphone smartphone) {
         boolean sair = false;
@@ -455,7 +494,7 @@ public class App {
 
                     try {
 
-                    }
+                    };
 
 
                     switch ()
